@@ -41,7 +41,19 @@ class NotesAdapter(private val context: Context): RecyclerView.Adapter<NotesAdap
         holder.notes_layout.setCardBackgroundColor(holder.itemView.resources.getColor(randomColor(), null))
     }
 
-  
+    fun randomColor() : Int{
+        val list = ArrayList<Int>()
+        list.add(R.color.NoteColor1)
+        list.add(R.color.NoteColor2)
+        list.add(R.color.NoteColor3)
+        list.add(R.color.NoteColor4)
+        list.add(R.color.NoteColor5)
+        list.add(R.color.NoteColor6)
+
+        val seed = System.currentTimeMillis().toInt()
+        val randomIndex = Random(seed).nextInt(list.size)
+        return list[randomIndex]
+    }
 
 
 
