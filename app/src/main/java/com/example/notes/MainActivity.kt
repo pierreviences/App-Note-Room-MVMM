@@ -23,6 +23,16 @@ class MainActivity : AppCompatActivity() {
     lateinit var viewModel: NoteViewModel
     lateinit var adapter: NotesAdapter
     lateinit var selectedNote: Note
+
+    private val updateOne = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+        result ->
+        if(result.resultCode == Activity.RESULT_OK){
+            val note = result.data?.getSerializableExtra("note") as? Note
+            if(note != null){
+                viewModel.updateNote(note)
+            }
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
