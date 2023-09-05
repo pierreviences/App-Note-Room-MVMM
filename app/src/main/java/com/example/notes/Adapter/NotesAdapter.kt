@@ -11,7 +11,7 @@ import com.example.notes.Models.Note
 import com.example.notes.R
 import kotlin.random.Random
 
-class NotesAdapter(private val context: Context): RecyclerView.Adapter<NotesAdapter.NoteViewHolder>() {
+class NotesAdapter(private val context: Context, val listener: NotesItemClickListener): RecyclerView.Adapter<NotesAdapter.NoteViewHolder>() {
 
     private val NotesList : ArrayList<Note>()
     private val fullList : ArrayList<Note>()
@@ -39,6 +39,16 @@ class NotesAdapter(private val context: Context): RecyclerView.Adapter<NotesAdap
         holder.date.isSelected = true
 
         holder.notes_layout.setCardBackgroundColor(holder.itemView.resources.getColor(randomColor(), null))
+
+        holder.notes_layout.setOnClickListener {
+            listener.onItemClicked(NotesList[holder.adapterPosition])
+        }
+
+        holder.notes_layout.setOnLongClickListener{
+            listener.onLongItemClicked(NotesList[holder.position], holder.notes_layout)
+            true
+        }
+
     }
 
     fun randomColor() : Int{
@@ -55,6 +65,10 @@ class NotesAdapter(private val context: Context): RecyclerView.Adapter<NotesAdap
         return list[randomIndex]
     }
 
+    interface NotesItemClickListener{
+        fun onItemClicked(note: Note)
+        fun onLongItemClicked(note: Note, cardView: CardView)
+    }
 
 
 }
