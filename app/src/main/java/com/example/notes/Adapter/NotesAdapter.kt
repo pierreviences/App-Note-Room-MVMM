@@ -13,8 +13,8 @@ import kotlin.random.Random
 
 class NotesAdapter(private val context: Context, val listener: NotesItemClickListener): RecyclerView.Adapter<NotesAdapter.NoteViewHolder>() {
 
-    private val NotesList : ArrayList<Note>()
-    private val fullList : ArrayList<Note>()
+    private val NotesList = ArrayList<Note>()
+    private val fullList = ArrayList<Note>()
     inner class NoteViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val notes_layout = itemView.findViewById<CardView>(R.id.card_layout)
         val title = itemView.findViewById<TextView>(R.id.tv_title)
@@ -49,6 +49,26 @@ class NotesAdapter(private val context: Context, val listener: NotesItemClickLis
             true
         }
 
+    }
+
+    fun updateList(newList: List<Note>){
+        fullList.clear()
+        fullList.addAll(newList)
+        NotesList.clear()
+        NotesList.addAll(fullList)
+        notifyDataSetChanged()
+
+    }
+
+    fun filterList(search: String){
+        NotesList.clear()
+        for(item in fullList){
+            if(item.title?.lowercase()?.contains(search.lowercase()) == true || item.note?.lowercase()?.contains(search.lowercase()) == true){
+                NotesList.add(item)
+            }
+        }
+
+        notifyDataSetChanged()
     }
 
     fun randomColor() : Int{
