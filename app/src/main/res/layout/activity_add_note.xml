@@ -62,7 +62,7 @@
         android:layout_height="0dp"
         android:ems="10"
         android:layout_marginTop="26dp"
-        android:inputType="text"
+        android:inputType="textMultiLine"
         android:hint="Start Typing"
         android:background="@null"
         android:gravity="top"
