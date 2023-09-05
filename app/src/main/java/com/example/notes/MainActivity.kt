@@ -1,9 +1,11 @@
 package com.example.notes
 
 import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.LinearLayout
+import android.widget.SearchView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
@@ -28,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
         initUI()
         viewModel = ViewModelProvider(this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(application).get(NoteViewModel::class.java))
+            ViewModelProvider.AndroidViewModelFactory.getInstance(application)).get(NoteViewModel::class.java)
 
         viewModel.allnotes.observe(this){
             list ->
@@ -46,14 +48,29 @@ class MainActivity : AppCompatActivity() {
         adapter = NotesAdapter(this, this)
         binding.recycleView.adapter = adapter
 
-        val getCount = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+        val getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
             result ->
             if(result.resultCode == Activity.RESULT_OK){
                 val note = result.data?.getSerializableExtra("note") as? Note
                 if(note != null){
-                    viewModel.insert
+                    viewModel.insertNote(note)
                 }
             }
         }
+        binding.fbAddNote.setOnClickListener {
+            val intent = Intent(this, AddNote::class.java)
+            getContent.launch(intent)
+        }
+
+        binding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newtext: String?): Boolean {
+
+            }
+
+        })
     }
 }
